@@ -4,11 +4,11 @@
  * @Autor: Chen
  * @Date: 2021-12-17 11:09:44
  * @LastEditors: Chen
- * @LastEditTime: 2021-12-23 10:51:29
+ * @LastEditTime: 2021-12-23 17:20:21
 -->
 <template>
   <div id="app">
-    <hk-antv-x6 :nodeList="nodeList2" minimap contactPorts rightMenu></hk-antv-x6>
+    <hk-antv-x6 :nodeList="nodeList2" minimap contactPorts rightMenu keyboard></hk-antv-x6>
   </div>
 </template>
 

@@ -4,11 +4,30 @@
  * @Autor: Chen
  * @Date: 2021-12-21 13:55:44
  * @LastEditors: Chen
- * @LastEditTime: 2021-12-23 13:52:14
+ * @LastEditTime: 2021-12-23 17:34:23
  */
 import { Graph,Addon,DataUri  } from '@antv/x6';
 import { graphOptions,StencilOptions } from '../config/antv.config'
 import { Reat,Circle } from '../config/shape.config'
+
+/**
+ * @description: antvX6使用
+ * @function: createGraph(graphNode:HTMLElement,options:Options) 创建画布 
+ * @function: dispose() 销毁画布
+ * @function: createStencil(Stencil:HTMLElement,options:Options) 创建侧边栏的 UI 组件
+ * @function: createLeftNode(nodeList：Array | Object | undefined) 创建侧边栏的 UI 组件库Node
+ *          isArray: params:[{type:string,label:string,img:string}] type(Reat | Circle)图形类型(矩形|圆) label文本信息 img图片icon
+ *          isObject: params{key:string,value:Array} key为分组name value为节点信息
+ * @function: openPoints() 开启连接桩进行连线操作
+ * @function: registerClick() 注册node以及edge点击事件
+ * @function: registerRightMenu() 注册右键点击菜单
+ * @function: registerKeyboard() 注册常用的键盘快捷键
+ * @function: removeNode() 删除当前选中节点
+ * @function: downLoad() 当前graph转化为图片下载
+ * @function: antvToJson() 当前graph转化为json串
+ * @return {*} antvX6  CLASS
+ * @author: Chen
+ */
 class antvX6{
     constructor(){
         //graph对象
@@ -66,7 +85,6 @@ class antvX6{
                     }
                     return Reat(this.graph,v)
                 });
-                console.log(this.stencil)
                 this.stencil.load(renderNodeList,x)
             }
         }
@@ -136,6 +154,30 @@ class antvX6{
             this.toggleContextMenu(true);
         })   
     }
+    //注册常用快捷键
+    registerKeyboard(){
+        this.graph.bindKey('ctrl+c', () => {
+            const cells = this.graph.getSelectedCells()
+            if (cells.length) {
+                this.graph.copy(cells)
+            }
+            return false
+        })
+    
+        this.graph.bindKey('ctrl+v', () => {
+            if (!this.graph.isClipboardEmpty()) {
+                const cells = this.graph.paste({ offset: 32 })
+                this.graph.cleanSelection()
+                this.graph.select(cells)
+            }
+            return false
+        })
+
+        this.graph.bindKey('delete', () => {
+            this.removeNode();
+            return false
+        })
+    }
     //更新位置以及点击事件
     updatePosition(e){
         const style = this.menuNode.style;
@@ -191,6 +233,7 @@ class antvX6{
     }
     //删除节点
     removeNode(){
+        if(!this.graph.isSelectionEmpty()) this.graph.getSelectedCells().forEach(v=>this.graph.removeNode(v));
         this.graph.removeNode(this.actionShape);
     }
     //下载图片

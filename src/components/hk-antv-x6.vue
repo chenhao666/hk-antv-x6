@@ -4,7 +4,7 @@
  * @Autor: Chen
  * @Date: 2021-12-17 11:22:38
  * @LastEditors: Chen
- * @LastEditTime: 2021-12-23 14:19:07
+ * @LastEditTime: 2021-12-23 17:26:09
 -->
 <template>
   <div class="hkAntvX6">
@@ -43,6 +43,7 @@
  * @param {Boolean} minimap 是否开启小地图  default:false
  * @param {Boolean} contactPorts 是否开启连接桩连线  default:false
  * @param {Boolean} rightMenu 是否开启右键菜单  default:false
+ * @param {Boolean} keyboard 是否键盘快捷键  default:false
  * @function: menuClick 右键菜单点击事件
  * @function: deleteNode 删除节点
  * @function: downLoad 下载当前图片
@@ -74,6 +75,10 @@ export default {
     rightMenu:{
       type:Boolean,
       default:false
+    },
+    keyboard:{
+      type:Boolean,
+      default:false
     }
   },
   data () {
@@ -85,7 +90,7 @@ export default {
     
   },
   mounted(){
-    const { nodeList,minimap,contactPorts,rightMenu } = this;
+    const { nodeList,minimap,contactPorts,rightMenu,keyboard } = this;
     let antvX6=new AntvX6();
     antvX6.createGraph(this.$refs.Graph,{
       minimap:{
@@ -115,7 +120,12 @@ export default {
 
     if(rightMenu) antvX6.registerRightMenu(this.$refs.contextmenu);
 
+    if(keyboard) antvX6.registerKeyboard();
+
     this.antvX6=antvX6;
+  },
+  beforeDestroy(){
+    this.antvX6.dispose();
   },
   methods:{
     menuClick({ item, key, keyPath }){

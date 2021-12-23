@@ -4,7 +4,7 @@
  * @Autor: Chen
  * @Date: 2021-12-21 14:31:33
  * @LastEditors: Chen
- * @LastEditTime: 2021-12-22 10:11:18
+ * @LastEditTime: 2021-12-23 17:20:15
  */
 import { Shape } from "@antv/x6";
 //基础画布配置
@@ -25,6 +25,20 @@ const graphOptions={
     grid: {
         size: 10,      // 网格大小 10px
         visible: true, // 渲染网格背景
+    },
+    clipboard: {  //开启剪切板
+      enabled: true,
+    },
+    keyboard: {  //开启键盘快捷键
+      enabled: true,
+      global: true,
+    },
+    selecting: {  //开启选择
+      enabled: true,
+      multiple: true,
+      rubberband: true,
+      movable: true,
+      showNodeSelectionBox: true,
     },
     connecting: { //自定义连线样式
         router: 'manhattan',
